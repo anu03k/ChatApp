@@ -1,12 +1,16 @@
 import React , {useState, useEffect} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from "styled-components"
 import gradBg from "../assets/gradBg.jpg"
 import { ToastContainer, toast } from 'react-toastify';
-
+import "react-toastify/dist/ReactToastify.css"
+import axios from "axios"
+import { registerRoute } from '../ApiRoutes';
 
 
 function Register() {
+
+  const navigate =useNavigate();
 
   // ------------ STATES -----------
 
@@ -18,20 +22,71 @@ function Register() {
 
    })
 
+   const toastOpt = 
+    { 
+      position : "bottom-right",
+      autoClose:5000,
+      pauseOnHover:true,
+      draggable:true,
+      theme:"dark",
+      
+    
+    }
+   
 
-  //--- HANDLE SUBMIT------
-   const handleSubmit = (event)=>{
+
+  //--- ANDLE SUBMIT------
+   const handleSubmit =  async (event)=>{
     event.preventDefault()
-    alert("form")
+    
+    if (handleValidation()){
+      console.log("validating")
+      console.log('in validation', registerRoute )
+      // form data is extracted from the state
+      const {password, confirmpassword,username,email} =values;
+       const {data}= await axios.post(registerRoute,{
+         username, email, password,
+       });
+       if(data.status ===  false){
+        toast.error(data.msg , toastOpt)
+       }
+       if(data.status === true){
+        localStorage.setItem('chatAppUser', JSON.stringify(data.user))
+       }
+
+      //   sends a POST request to the specified URL with the form data.
+       /* If the request is successful, the response data is logged to the console.
+        If the request fails, the error is caught and logged to the console.
+        */
+
+        // for storing - localStorage.setItem('key', 'value');,,set get clear remove
+
+       navigate('/');
+
+    }
    }
 
    const handleValidation =()=>{
     const {password, confirmpassword,username,email} =values;
      if(password !== confirmpassword){
-      toast.error("Passwords do not match ! ")
-        
+      toast.error("Passwords do not match ! ", toastOpt )
+      return false ;  
      }
-
+      
+       if (username.length < 3){
+        toast.error("Minimum 3 character of username required" ,toastOpt)
+          return false;
+      }
+      if (password.length < 8){
+        toast.error("Minimum 8 character of pw required" ,toastOpt)
+          return false;
+      }
+      else if (email === ""){
+        toast.error("PLease enter your  email" ,toastOpt)
+          return false;
+      }
+      return true;
+    
    }
 
    //---------HANDLE CHANGE ----
@@ -87,6 +142,7 @@ function Register() {
 
         </form>
     </FormContainer>
+    <ToastContainer />
     </>
   )
 }
