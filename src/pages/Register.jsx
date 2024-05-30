@@ -61,7 +61,7 @@ function Register() {
 
         // for storing - localStorage.setItem('key', 'value');,,set get clear remove
 
-       navigate('/');
+       navigate('/chat');
 
     }
    }
@@ -110,7 +110,7 @@ function Register() {
       {/* onsubmit capyure event and pass to our custom event handler */}
         <div className='brand'>
            <img src="./assests/react." alt="" srcset="" />
-           <h1>Linked</h1>
+           <h1>ChatterBox</h1>
        </div>
 
         <input 

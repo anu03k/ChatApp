@@ -20,9 +20,8 @@ app.use('/api/auth', userRoutes)
 mongoose.connect(DB,
     // The second argument is an options object with various options for the connection.
     {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-            // Add other connection options if needed
+
+        // Add other connection options if needed
     }
 ).then(() => {
     // .then() is used to handle the result of promise after it had been resolved or rejected - promise.then(onfullfilled  onrejected)
