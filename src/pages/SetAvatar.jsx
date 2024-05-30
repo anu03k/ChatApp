@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css"
 import axios from "axios"
 import { SetAvatarRoute } from '../ApiRoutes';
 import { Buffer } from 'buffer';
-
+import Register from './Register';
 
 const SetAvatar = () => {
 
