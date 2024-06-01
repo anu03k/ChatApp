@@ -6,7 +6,7 @@ import loader from '../assets/loader.gif'
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
 import axios from "axios"
-import { SetAvatarRoute } from '../ApiRoutes';
+import { setAvatarRoute } from '../ApiRoutes';
 import { Buffer } from 'buffer';
 import Register from './Register';
 
@@ -43,10 +43,24 @@ const SetAvatar = () => {
 
         // local storage return string so parsing into js obj useing json.parse
         const user = await JSON.parse(localStorage.getItem("chatAppUser"))
-        const {data} = await axios.post(`${SetAvatarRoute}/${user._id}` ,{
+        const {data} = await axios.post(`${setAvatarRoute}/${user._id}` ,{
             image: avatars[SelectedAv]
             // server ma post req send url teo ..ani data chai image
-        } )
+        } );
+
+
+        //checks if backend's response contain a propery named isSEt
+        if (data.isSet){
+          user.isAvatarImgSet =true;
+          //user model's
+          user.AvatarImg = data.image;
+          localStorage.setItem("chatAppUser", JSON.stringify(user))
+          // avatar image  type is string in model
+          navigate('/chat')
+        
+        } else{
+          toast.error("Error setting error , Please try again" , toastOpt)
+        }
       } 
         
 
@@ -73,7 +87,7 @@ const SetAvatar = () => {
             await fetchImagesWithRetry(retryCount - 1, delay * 2); // Exponential backoff
           } else {
             console.error("Error fetching images:", error);
-            setIsLoading(false);
+            SetIsLoadin(false);
           }
         }
       };
