@@ -158,7 +158,7 @@ gap: 1rem;
 align-items: center;
 /* background-color: #8e8e96;; */
 background-image: url(${gradBg});
-color: #d96d98;
+color: #e21e6c;
   .brand{
     display: flex;
     align-items: center;
@@ -190,7 +190,7 @@ color: #d96d98;
       padding: 0.6rem;
 
       color: white;
-      border-bottom : 0.1rem solid #d96d98;
+      border-bottom : 0.1rem solid #e21e6c;
       
       /* border-radius:10%; */
       width: 100%;

@@ -2,7 +2,7 @@
 import React , {useState, useEffect} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from "styled-components"
-
+import loader from '../assets/loader.gif'
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
 import axios from "axios"
@@ -18,7 +18,7 @@ const SetAvatar = () => {
     const [avatars, SetAvatars] = useState([]);
     const [isLoading, SetIsLoadin] = useState(true);
     const [SelectedAv , SetSelectedAv] = useState(undefined);
-
+    // onst [isLoading, setIsLoading] = useState(true);
 
     //-----Tosat------
 
@@ -34,7 +34,20 @@ const SetAvatar = () => {
     }
 
 
-    const SetProfilePic = async () => {
+    const  SetProfilePic = async () => {
+      if(SelectedAv === undefined){
+        toast.error("Please select an avatar", toastOpt)
+      }
+
+      else {
+
+        // local storage return string so parsing into js obj useing json.parse
+        const user = await JSON.parse(localStorage.getItem("chatAppUser"))
+        const {data} = await axios.post(`${SetAvatarRoute}/${user._id}` ,{
+            image: avatars[SelectedAv]
+            // server ma post req send url teo ..ani data chai image
+        } )
+      } 
         
 
     };
@@ -75,42 +88,116 @@ const SetAvatar = () => {
 
 
   return (
+
+    
     <>
+
+    { isLoading ? <Container> 
+      <img src={loader } alt='loader' className='loader' />
+        </Container> 
+
+        // if false then ie already loaded then show conatiner
+
+        : (
+<Container>
+          <div className="title-container">
+            <h1>Pick an Avatar as your profile picture</h1>
+          </div>
+          <div className="avatars">
+            {avatars.map((avatar, index) => {
+              return (
+                <div
+                  className={`avatar ${
+                    SelectedAv === index ? "selected" : ""
+                  }`}
+                >
+                  <img
+                    src={`data:image/svg+xml;base64,${avatar}`}
+                    alt="avatar"
+                    key={avatar}
+                    onClick={() => SetSelectedAv(index)}
+                  />
+                </div>
+              );
+            })}
+          </div>
+          <button onClick={SetProfilePic} className="submit-btn">
+            Set as Profile Picture
+          </button>
+          <ToastContainer />
+        </Container>
+    
+    
+
+
+
+        )
+      
+        
+        
+        }
+
+    
     {/* ---------------Container------------ */}
-    <div className=''> 
-                    {/* title ------------- */}
-        <div>
-        <h1>Pick an avatar for your profile picture </h1>
-        </div>
-        <div>
-            {
-
-                //from set avatars we have 4 avatars so ampping o ver it
-                avatars.map((avatar,index )=>{
-                    return(
-                        /// Map over the avatars array and render each avatar inside a <div>
-                        <div className= {`avatar${SelectedAv === index?  "selected" : ""}`}> 
-                        {/* maps over all 4  avatar ani if index is same of selected then mark class selected adedd */}
-                        <img src={`data:image/svg+xml;base64,${avatar}`} alt='avatar'  onClick={SetSelectedAv(index)} />
-                        {/* image is base64 coded svg image ..setselected ma index pass*/}
-                        </div>
-                    )
-                })
-
-            }
-            
-        </div>
-
-       
-
-
-    </div>
-
-    
-    
     
     </>
   )
 }
 
-export default SetAvatar
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 3rem;
+  background-color:#242433;
+  height: 100vh;
+  width: 100vw;
+
+  .loader {
+    max-inline-size: 100%;
+  }
+
+  .title-container {
+    h1 {
+      color: white;
+    }
+  }
+  .avatars {
+    display: flex;
+    gap: 2rem;
+
+    .avatar {
+      border: 0.4rem solid transparent;
+      padding: 0.4rem;
+      border-radius: 5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: 0.5s ease-in-out;
+      img {
+        height: 6rem;
+        transition: 0.5s ease-in-out;
+      }
+    }
+    .selected {
+      border: 0.4rem solid #e21e6c
+    }
+  }
+  .submit-btn {
+    background-color: #e21e6c;
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 0.4rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    &:hover {
+      background-color: #d96d98;
+    }
+  }
+`;
+
+export default SetAvatar;
