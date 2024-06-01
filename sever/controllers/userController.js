@@ -72,44 +72,18 @@ module.exports.setAvatar = async(req, res, next) => {
         next(ex)
     }
 }
+module.exports.getAllUsers = async(req, res, next) => {
 
-// exports.login = asyncHandler(async(req, res) => {
-//     const { username, password } = req.body;
+    try {
+        // $ne operator to find documents where the _id is not equal to the provided ID.
+        const Ausers = await User.find({ _id: { $ne: req.params.id } }).select([
+            "email", "username", "AvatarImg", "_id"
+        ]);
+        //select only these to return as response
+        return res.json(Ausers);
 
-//     // Basic validation (consider more robust validation using libraries like Joi)
-//     if (!username || !password) {
-//         return res.status(400).json({ message: 'Please provide username and password' });
-//     }
+    } catch (ex) {
+        next(ex)
+    }
 
-//     try {
-//         // Find user by username
-//         const user = await User.findOne({ username });
-
-//         if (!user) {
-//             return res.status(401).json({ message: 'Invalid username or password' });
-//         }
-
-//         // Validate password using bcrypt (ensure password hashing in your User model)
-//         const isMatch = await user.comparePassword(password);
-
-//         if (!isMatch) {
-//             return res.status(401).json({ message: 'Invalid username or password' });
-//         }
-
-//         // Login successful
-//         // Generate JWT token (consider using a dedicated library likejsonwebtoken)
-//         // const token = await user.generateAuthToken();
-
-//         res.status(200).json({
-//             message: 'Login successful',
-//             user: {
-//                 _id: user._id,
-//                 username: user.username,
-//             },
-//             // token,
-//         });
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ message: 'Internal Server Error' });
-//     }
-// });
+}

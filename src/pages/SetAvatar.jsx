@@ -34,6 +34,16 @@ const SetAvatar = () => {
     }
 
 
+    // useEffect(<function>, <dependency>) runs on every render so that empty array ensure runs on only first render
+
+
+    useEffect(()=>{
+      if(!localStorage.getItem('chatAppUser')){
+        navigate('/login')
+      }
+    },[])
+
+
     const  SetProfilePic = async () => {
       if(SelectedAv === undefined){
         toast.error("Please select an avatar", toastOpt)
