@@ -5,6 +5,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import Chat from './pages/chat'
 import SetAvatar from './pages/SetAvatar'
+import Contacts from './components/Contacts'
 
 function App() {
   
@@ -16,6 +17,7 @@ function App() {
       <Route path='/login'  element={<Login />} />
       <Route path='/chat'  element={<Chat />} />
       <Route path='/SetAvatar'  element={<SetAvatar />} />
+      {/* <Route path='/contscts' element={<Contacts />} /> */}
 
     </Routes>
     </BrowserRouter>
