@@ -4,14 +4,16 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { allUserRoute } from '../ApiRoutes';
 import Contacts from '../components/Contacts';
+import Welcome from '../components/welcome';
 import styled from 'styled-components';
+import ChatContainer from '../components/ChatContainer';
 
 const Chat = () => {
   const navigate = useNavigate()
 
     const [contacts, setContacts] = useState([]);
     const [currentUser , setCurrentUser] =useState()
-
+    const [isLoaded , setLoaded]=useState(false)
     const [currentChat, setCurrentChat]=useState(undefined)
     useEffect(()=>{
   
@@ -22,6 +24,7 @@ const Chat = () => {
         }
         else {
           setCurrentUser(await JSON.parse(localStorage.getItem('chatAppUser')))
+          setLoaded(true)
           // console.log('currentUser:', currentUser);
         }
   
@@ -72,7 +75,21 @@ const Chat = () => {
           <Container>
             <div className="container">
             <Contacts contacts={contacts} currentUser={currentUser} changeChat={handleChatChange} />
-          
+            {
+               isLoaded && currentChat === undefined ?
+              (currentUser && <Welcome currentUser={currentUser} /> )
+              :
+              ( currentUser && <ChatContainer currentChat={currentChat} currentUser={currentUser} />)
+            }
+
+
+            {/* {currentUser && <Welcome currentUser={currentUser} />}  */}
+
+
+
+
+
+            
             </div>
 
           </Container>
@@ -103,6 +120,7 @@ const Container=styled.div`
     background-color: #00000076;
     display: grid;
     grid-template-columns: 25% 75%;
+    
   
   }
 `
