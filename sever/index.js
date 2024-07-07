@@ -2,6 +2,7 @@ const express = require("express")
 const cors = require("cors")
 require("dotenv").config();
 const mongoose = require("mongoose")
+const messageRoute = require('./routes/MsgRoute')
 
 const DB = process.env.DATABASE;
 const userRoutes = require('./routes/userRoutes')
@@ -11,11 +12,12 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+app.use(express.json()); // Middleware to parse JSON
 
 
 
 app.use('/api/auth', userRoutes)
+app.use('/api/messages', messageRoute)
 
 mongoose.connect(DB,
     // The second argument is an options object with various options for the connection.
