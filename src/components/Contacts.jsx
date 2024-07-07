@@ -60,7 +60,7 @@ const Contacts = ({contacts,currentUser,changeChat}) => { //destructure contacts
           {currentUserImg && currentUsername && (
               <Container>
               
-              <div className='text-white'>Container</div>
+              
              <div className="brand">
               <h3>ChatterBox</h3>
              </div>
@@ -79,7 +79,7 @@ const Contacts = ({contacts,currentUser,changeChat}) => { //destructure contacts
                   </div>
                 </div>
               ))}
-              <div className='text-white'>haha</div>
+              
             </div>
 
 
