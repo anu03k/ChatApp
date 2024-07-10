@@ -37,7 +37,7 @@ function Login() {
 
     useEffect(()=>{
       if(localStorage.getItem('chatAppUser')){
-        navigate('/chat')
+        navigate('/')
       }
     },[])
    
@@ -64,7 +64,7 @@ function Login() {
           toast.error(data.msg || "Invalid username or password", toastOpt);
         } else if (data.status === true) {
           localStorage.setItem('chatAppUser', JSON.stringify(data.user));
-          navigate('/chat');
+          navigate('/');
         }
       } catch (error) {
         console.error("Login Error:", error);

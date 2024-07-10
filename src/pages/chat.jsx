@@ -1,14 +1,27 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useRef } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { allUserRoute } from '../ApiRoutes';
+import { allUserRoute,host } from '../ApiRoutes';
 import Contacts from '../components/Contacts';
 import Welcome from '../components/welcome';
 import styled from 'styled-components';
 import ChatContainer from '../components/ChatContainer';
+import {io} from 'socket.io-client'
+
+
+
+
+
+
 
 const Chat = () => {
+  const socket = useRef();
+
+
+
+
+
   const navigate = useNavigate()
 
     const [contacts, setContacts] = useState([]);
@@ -34,6 +47,20 @@ const Chat = () => {
    
  },[currentUser])
  //this type of effect run only when dependency chnages here is user changes 
+
+useEffect(()=>{
+  if(currentUser){
+    socket.current=io(host)
+    socket.current.emit('add-user',currentUser._id)
+      //Adds to global users through backend
+
+
+  }
+
+
+
+},[currentUser])
+
 
       const handleChatChange = (chat)=>{
         setCurrentChat(chat)
@@ -79,7 +106,7 @@ const Chat = () => {
                isLoaded && currentChat === undefined ?
               (currentUser && <Welcome currentUser={currentUser} /> )
               :
-              ( currentUser && <ChatContainer currentChat={currentChat} currentUser={currentUser} />)
+              ( currentUser && <ChatContainer currentChat={currentChat} currentUser={currentUser}  socket={socket}/>)
             }
 
 

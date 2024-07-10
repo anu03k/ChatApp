@@ -61,7 +61,7 @@ function Register() {
 
         // for storing - localStorage.setItem('key', 'value');,,set get clear remove
 
-       navigate('/chat');
+       navigate('/');
 
     }
    }
